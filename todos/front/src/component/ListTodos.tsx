@@ -45,17 +45,19 @@ export const ListTodos: FC<ListTodosProps> = ({ setListTodos, listTodos }) => {
   };
 
   const handleFinishTodo = (pos: number) => {
-    listTodos[pos].completed = !listTodos[pos].completed;
-    const { id, name, completed } = listTodos[pos];
-    fetch(`http://localhost:3001/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id, name, completed }),
-    }).then(() => {
-      setListTodos([...listTodos.sort((a, b) => Number(b.completed) - Number(a.completed))]);
-    });
+    if (inputValueE.pos == -1) {
+      listTodos[pos].completed = !listTodos[pos].completed;
+      const { id, name, completed } = listTodos[pos];
+      fetch(`http://localhost:3001/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, name, completed }),
+      }).then(() => {
+        setListTodos([...listTodos.sort((a, b) => Number(b.completed) - Number(a.completed))]);
+      });
+    }
   };
 
   const deletTodo = (pos: number) => {
