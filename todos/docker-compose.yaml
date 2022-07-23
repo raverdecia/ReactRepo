@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  todo:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./front
+    ports:
+      - 3000:3000
+    volumes:
+      - /Users/robertoverdeciacabana/ProyectosGit/todos/front:/srv
+    networks:
+      - frontend
+    environment:
+      - REACT_APP_API_URL=http://localhost:3001/
+
+  server:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./front
+    ports:
+      - 3001:3001
+    volumes:
+      - /Users/robertoverdeciacabana/ProyectosGit/todos/server:/srv
+    networks:
+      - frontend
+      - backend
+    environment:
+      - FRONT_URL=http://localhost:3000/
+
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=me
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=todos
+      - POSTGRES_HOST=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /Users/robertoverdeciacabana/ProyectosGit/todos/db_seed.sql:/docker-entrypoint-initdb.d/db_seed.sql
+    networks:
+      - backend
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=bob@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=fakepassword123
+    ports:
+      - 16543:80
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+networks:
+  frontend: ~
+  backend: ~
