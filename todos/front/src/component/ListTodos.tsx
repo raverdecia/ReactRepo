@@ -89,7 +89,10 @@ export const ListTodos: FC<ListTodosProps> = ({ setListTodos, listTodos }) => {
     >
       {listTodos.map(({ id, name, completed }, position) => {
         return (
-          <span style={{ width: "100vh", border: "0.5px solid black", display: "flex", backgroundColor: "azure" }}>
+          <span
+            key={id}
+            style={{ width: "100vh", border: "0.5px solid black", display: "flex", backgroundColor: "azure" }}
+          >
             <Checkbox completed={completed} handleFinishTodo={() => handleFinishTodo(position)} />
             {inputValueE.pos != -1 && position === inputValueE.pos ? (
               <>
