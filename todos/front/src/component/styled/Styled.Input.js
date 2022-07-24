@@ -16,6 +16,13 @@ const StyledInputContent = styled.div`
     margin-top: 7px;
     width: 98%;
   }
+  .red {
+    color: red;
+    font-weight: bold;
+  }
+  .black {
+    color: black;
+  }
 `;
 
 export default StyledInputContent;

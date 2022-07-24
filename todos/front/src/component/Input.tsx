@@ -20,7 +20,7 @@ export const Input: FC<InputProps> = ({ value, handleInputValue, handleEnter }) 
           if (key == "Enter") handleEnter();
         }}
       />
-      <p>Left: {30 - value.length}</p>
+      <p className={value.length == 30 ? "red" : "black"}>Left: {30 - value.length}</p>
     </StyledInput>
   );
 };
