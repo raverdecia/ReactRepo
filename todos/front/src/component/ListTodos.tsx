@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useState } from "react";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
+import StyledListTodo, { StyledFile, StyledName } from "./styled/Styled.ListTodo";
 
 export type ListTodosObj = {
   name: string;
@@ -18,17 +19,17 @@ export type ListTodosProps = {
 };
 
 export const ListTodos: FC<ListTodosProps> = ({ setListTodos, listTodos }) => {
-  const [inputValueE, setInputValueE] = useState<inputObj>({ value: "", pos: -1 });
+  const [inpValue, setinpValue] = useState<inputObj>({ value: "", pos: -1 });
 
   const handleInputValue = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-    if (inputValueE?.pos != -1) setInputValueE({ value: value, pos: inputValueE.pos });
+    if (inpValue?.pos != -1) setinpValue({ value: value, pos: inpValue.pos });
   };
 
   const handleEditTodo = (pos: number, flag?: boolean) => {
     const { id, name, completed } = listTodos[pos];
 
     if (flag) {
-      setInputValueE({ value: name, pos: pos });
+      setinpValue({ value: name, pos: pos });
     } else {
       //add edit todo to db
       fetch(`http://localhost:3001/`, {
@@ -36,16 +37,16 @@ export const ListTodos: FC<ListTodosProps> = ({ setListTodos, listTodos }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, name: inputValueE.value, completed }),
+        body: JSON.stringify({ id, name: inpValue.value, completed }),
       }).then(() => {
-        listTodos[pos].name = inputValueE.value;
-        setInputValueE({ value: "", pos: -1 });
+        listTodos[pos].name = inpValue.value;
+        setinpValue({ value: "", pos: -1 });
       });
     }
   };
 
   const handleFinishTodo = (pos: number) => {
-    if (inputValueE.pos == -1) {
+    if (inpValue.pos == -1) {
       listTodos[pos].completed = !listTodos[pos].completed;
       const { id, name, completed } = listTodos[pos];
       fetch(`http://localhost:3001/`, {
@@ -74,56 +75,30 @@ export const ListTodos: FC<ListTodosProps> = ({ setListTodos, listTodos }) => {
   };
 
   return (
-    <span
-      style={{
-        height: "fit-content",
-        width: "40vh",
-        fontFamily: "sans-serif",
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        alignItems: "center",
-        alignContent: "flex-start",
-        marginTop: "3px",
-      }}
-    >
-      {listTodos.map(({ id, name, completed }, position) => {
+    <StyledListTodo>
+      {listTodos.map(({ id, name, completed }, pos) => {
         return (
-          <span
-            key={id}
-            style={{ width: "100vh", border: "0.5px solid black", display: "flex", backgroundColor: "azure" }}
-          >
-            <Checkbox completed={completed} handleFinishTodo={() => handleFinishTodo(position)} />
-            {inputValueE.pos != -1 && position === inputValueE.pos ? (
+          <StyledFile key={id}>
+            <Checkbox completed={completed} handleFinishTodo={() => handleFinishTodo(pos)} />
+            {inpValue.pos != -1 && pos === inpValue.pos ? (
               <>
                 <Input
-                  value={inputValueE.value}
+                  value={inpValue.value}
                   handleInputValue={handleInputValue}
-                  handleEnter={() => handleEditTodo(position)}
+                  handleEnter={() => handleEditTodo(pos)}
                 />
-                <Button label={"done"} onClick={() => handleEditTodo(position)} />
+                <Button label={"done"} onClick={() => handleEditTodo(pos)} />
               </>
             ) : (
               <>
-                <div
-                  style={{
-                    width: "90%",
-                    margin: "2px",
-                    color: "black",
-                    fontSize: "18px",
-                    paddingLeft: "3px",
-                  }}
-                >
-                  {name}
-                </div>
-
-                <Button label={"edit"} onClick={() => handleEditTodo(position, true)} />
+                <StyledName>{name}</StyledName>
+                <Button label={"edit"} onClick={() => handleEditTodo(pos, true)} />
               </>
             )}
-            <Button label={"delete"} onClick={() => deletTodo(position)} />
-          </span>
+            <Button label={"delete"} onClick={() => deletTodo(pos)} />
+          </StyledFile>
         );
       })}
-    </span>
+    </StyledListTodo>
   );
 };

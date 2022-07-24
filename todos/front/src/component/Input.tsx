@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, KeyboardEvent } from "react";
+import StyledInput from "./styled/Styled.Input";
 
 export type InputProps = {
   value: string;
@@ -8,10 +9,9 @@ export type InputProps = {
 
 export const Input: FC<InputProps> = ({ value, handleInputValue, handleEnter }) => {
   return (
-    <span style={{ display: "flex", flexDirection: "column", width: "100%", height: "43px" }}>
+    <StyledInput>
       <input
         maxLength={30}
-        style={{ fontSize: "15px", width: "95%", marginTop: "7px" }}
         type="text"
         autoFocus={true}
         value={value}
@@ -20,7 +20,7 @@ export const Input: FC<InputProps> = ({ value, handleInputValue, handleEnter }) 
           if (key == "Enter") handleEnter();
         }}
       />
-      <p style={{ textAlign: "right", fontSize: "12px", margin: "0" }}>Left: {30 - value.length}</p>
-    </span>
+      <p>Left: {30 - value.length}</p>
+    </StyledInput>
   );
 };

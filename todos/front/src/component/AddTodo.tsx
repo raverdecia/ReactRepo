@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useState } from "react";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { ListTodosObj } from "./ListTodos";
+import StyledAddTodo from "./styled/Styled.AddTodo";
 
 export type AddTodoProps = {
   setListTodos: (listTodo: ListTodosObj[]) => void;
@@ -30,9 +31,9 @@ export const AddTodo: FC<AddTodoProps> = ({ setListTodos, listTodos }) => {
   };
 
   return (
-    <span style={{ display: "flex" }}>
+    <StyledAddTodo>
       <Input value={inputValue} handleInputValue={handleInputValue} handleEnter={addTodoDB} />
       <Button label={"done"} onClick={addTodoDB} />
-    </span>
+    </StyledAddTodo>
   );
 };

@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { AddTodo } from "./AddTodo";
 import { Title } from "./Title";
 import { ListTodos, ListTodosObj } from "./ListTodos";
+import StyledTodoHandler from "./styled/Styled.TodoHandler";
 
 export type TodoHandlerProps = {};
 
@@ -21,12 +22,10 @@ export const TodoHandler: FC<TodoHandlerProps> = () => {
   }, []);
 
   return (
-    <span
-      style={{ margin: "15px", display: "flex", flexDirection: "column", flexWrap: "wrap", alignContent: "center" }}
-    >
+    <StyledTodoHandler>
       <Title title={"To do list"} />
       <AddTodo listTodos={listTodos} setListTodos={setListTodos} />
       <ListTodos listTodos={listTodos} setListTodos={setListTodos} />
-    </span>
+    </StyledTodoHandler>
   );
 };

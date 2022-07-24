@@ -1,6 +1,5 @@
+import StyledApp from "./component/styled/Styled.app";
 import { TodoHandler } from "./component/TodoHandler";
-import logo from "./logo.svg";
-//import "./App.css";
 
 const appStyle = {
   backgroundColor: "whitesmoke",
@@ -12,9 +11,9 @@ const appStyle = {
 
 const App = () => {
   return (
-    <div className="App" style={appStyle}>
+    <StyledApp>
       <TodoHandler />
-    </div>
+    </StyledApp>
   );
 };
 
