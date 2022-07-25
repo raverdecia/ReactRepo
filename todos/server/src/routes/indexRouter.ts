@@ -24,16 +24,15 @@ router.get("/", async ({ query: { id } }: Request, res: Response) => {
 
 router.post("/", async ({ body: { name, completed } }: Request, res: Response) => {
   await pool.query(
-    "INSERT INTO todo (name, completed) VALUES ($1, $2)",
+    "INSERT INTO todo (name, completed) VALUES ($1, $2) RETURNING id",
     [name, completed],
-    (error: Error, todo: any) => {
+    (error: Error, id: any) => {
       if (error) {
         throw error;
       }
+      res.send(id);
     }
   );
-  const data = await pool.query("SELECT MAX(ID) AS LastID FROM todo");
-  res.send(data);
 });
 
 router.put("/", async ({ body: { name, completed, id } }: Request, res: Response) => {

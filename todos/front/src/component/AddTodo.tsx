@@ -26,7 +26,7 @@ export const AddTodo: FC<AddTodoProps> = ({ setListTodos, listTodos }) => {
       },
     })
       .then((res) => res.json())
-      .then(({ rows }) => setListTodos([...listTodos, { id: rows[0].lastid, name: inputValue, completed: false }]))
+      .then(({ rows }) => setListTodos([...listTodos, { id: rows[0].id, name: inputValue, completed: false }]))
       .then(() => setInputValue(""));
   };
 

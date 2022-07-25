@@ -56,7 +56,15 @@ export const ListTodos: FC<ListTodosProps> = ({ setListTodos, listTodos }) => {
         },
         body: JSON.stringify({ id, name, completed }),
       }).then(() => {
-        setListTodos([...listTodos.sort((a, b) => Number(b.completed) - Number(a.completed))]);
+        //setListTodos([...listTodos.sort((a, b) => Number(b.completed) - Number(a.completed))]);
+        fetch("http://localhost:3001/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => setListTodos(data));
       });
     }
   };
@@ -78,7 +86,7 @@ export const ListTodos: FC<ListTodosProps> = ({ setListTodos, listTodos }) => {
     <StyledListTodo>
       {listTodos.map(({ id, name, completed }, pos) => {
         return (
-          <StyledFile key={id}>
+          <StyledFile key={id * Math.random()}>
             <Checkbox completed={completed} handleFinishTodo={() => handleFinishTodo(pos)} />
             {inpValue.pos != -1 && pos === inpValue.pos ? (
               <>
