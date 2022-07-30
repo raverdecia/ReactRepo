@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { toNamespacedPath } from "path";
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 
-/*router.get("/", async (req, res) => {
+/*router.get("/", async (req, res, next: NextFunction) => {
   pool.query("SELECT * FROM todo", (error, result) => {
     if (error) throw error;
     res.status(200).json(result);
@@ -16,7 +16,7 @@ router.get("/", async ({ query: { id } }: Request, res: Response) => {
     ? await pool.query("SELECT * FROM todo WHERE id = $1 ORDER BY id", [id])
     : await pool.query("SELECT * FROM todo ORDER BY completed DESC, id", (error: Error, todo: any) => {
         if (error) {
-          throw error;
+          res.status(500).json(error);
         }
         res.send(todo.rows);
       });
@@ -28,7 +28,7 @@ router.post("/", async ({ body: { name, completed } }: Request, res: Response) =
     [name, completed],
     (error: Error, id: any) => {
       if (error) {
-        throw error;
+        res.status(500).json(error);
       }
       res.send(id);
     }
@@ -38,7 +38,7 @@ router.post("/", async ({ body: { name, completed } }: Request, res: Response) =
 router.put("/", async ({ body: { name, completed, id } }: Request, res: Response) => {
   await pool.query("UPDATE todo SET name = $1, completed = $2 WHERE id = $3", [name, completed, id], (error: Error) => {
     if (error) {
-      throw error;
+      res.status(500).json(error);
     }
     res.status(200).send(`modified with ID: ${id}`);
   });
@@ -47,7 +47,7 @@ router.put("/", async ({ body: { name, completed, id } }: Request, res: Response
 router.delete("/", async ({ query: { id } }: Request, res: Response) => {
   await pool.query("DELETE FROM todo WHERE id= $1", [id], (error: Error) => {
     if (error) {
-      throw error;
+      res.status(500).json(error);
     }
     res.status(200).send(`deleted with id: ${id}`);
   });
