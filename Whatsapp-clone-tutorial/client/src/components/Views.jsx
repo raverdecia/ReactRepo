@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import Loguin from "./loguin/Login";
-import Signup from "./loguin/Signup";
+import Loguin from "./login/Login";
+import Signup from "./login/Signup";
 
 const Views = () => {
   return (
