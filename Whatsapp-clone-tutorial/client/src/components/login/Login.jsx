@@ -3,9 +3,12 @@ import { Formik, Form } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
 import TextField from "./TextField";
+import { AccountContext } from "../AccountContext";
+import { useContext } from "react";
 
 const Loguin = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(AccountContext);
   return (
     <Formik
       initialValues={{ username: "", password: "" }}
@@ -39,6 +42,8 @@ const Loguin = () => {
           .then((data) => {
             if (!data) return;
             console.log(data);
+            setUser({ ...data });
+            navigate("/home");
           });
         actions.resetForm();
       }}

@@ -3,10 +3,13 @@ import { VStack, ButtonGroup, Button, Heading } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
+import { AccountContext } from "../AccountContext";
 import TextField from "./TextField";
+import { useContext } from "react";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(AccountContext);
   return (
     <Formik
       initialValues={{ username: "", password: "" }}
@@ -39,7 +42,8 @@ const Signup = () => {
           })
           .then((data) => {
             if (!data) return;
-            console.log(data);
+            setUser({ ...data });
+            navigate("/home");
           });
         actions.resetForm();
       }}
