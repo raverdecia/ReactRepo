@@ -7,9 +7,7 @@ const bcrypt = require("bcrypt");
 router
   .route("/login")
   .get(async (req, res) => {
-    console.log(req.session);
     if (req.session.user && req.session.user.username) {
-      console.log("login");
       res.json({ loggedIn: true, username: req.session.user.username });
     } else {
       res.json({ loggedIn: false });
@@ -24,7 +22,8 @@ router
       const isSamePass = await bcrypt.compare(req.body.password, potencialLoguin.rows[0].passhash);
 
       if (isSamePass) {
-        //loguin
+        //login
+
         req.session.user = {
           username: req.body.username,
           id: potencialLoguin.rows[0].id,

@@ -20,6 +20,7 @@ const UserContext = ({ children }) => {
             setUser({ loggedIn: false });
             return;
           }
+
           return res.json();
         })
         .then((data) => {
@@ -27,6 +28,7 @@ const UserContext = ({ children }) => {
             setUser({ loggedIn: false });
             return;
           }
+
           navigate("/home");
           setUser({ ...data });
         });
