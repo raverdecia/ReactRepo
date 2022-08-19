@@ -1,15 +1,16 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { VStack, ButtonGroup, Button, Heading } from "@chakra-ui/react";
+import { VStack, ButtonGroup, Button, Heading, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
 import { AccountContext } from "../AccountContext";
 import TextField from "./TextField";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 const Signup = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(AccountContext);
+  const [error, setError] = useState(null);
   return (
     <Formik
       initialValues={{ username: "", password: "" }}
@@ -43,13 +44,20 @@ const Signup = () => {
           .then((data) => {
             if (!data) return;
             setUser({ ...data });
-            navigate("/home");
+            if (data.status) {
+              setError(data.status);
+            } else if (data.loggedIn) {
+              navigate("/home");
+            }
           });
         actions.resetForm();
       }}
     >
       <VStack as={Form} w={{ base: "90%", md: "500px" }} m="auto" justify="center" h="100vh" spacing="1rem">
         <Heading>Sign Up</Heading>
+        <Text as="p" color="red.500">
+          {error}
+        </Text>
 
         <TextField name="username" placeholder="Enter the username" autoComplete="off" label="Username"></TextField>
         <TextField
